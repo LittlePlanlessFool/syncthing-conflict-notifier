@@ -1,8 +1,10 @@
 #!/bin/bash
-# Edit variable value with root location of a syncthing folder that needs to be watched
-SYNCTHING_DIR=
+# Edit variable value with root locations of syncthing folders that needs to be watched
+SYNCTHING_DIRS=("%path1%" "%path2%")
 
-if [[ -n `ls -1 "$SYNCTHING_DIR"/*.sync-conflict-* 2> /dev/null` ]]
-then
-	notify-send --urgency=critical "NEW SYNCTHING CONFLICTS DETECTED!!" > /dev/null
-fi
+for FOLDER in ${SYNCTHING_DIRS[@]}; do
+	if [[ -n `ls -1 "$FOLDER"/*.sync-conflict-* 2> /dev/null` ]]
+	then
+		notify-send -u critical -a syncthing-conflict-notifier "NEW SYNCTHING CONFLICTS IN ${FOLDER} DETECTED!!" > /dev/null
+	fi
+done
